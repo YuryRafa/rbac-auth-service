@@ -1,0 +1,38 @@
+{
+  "name": "rbac-auth-service",
+  "version": "1.0.0",
+  "description": "Secure authentication server with role-based access control",
+  "main": "server.ts",
+  "scripts": {
+    "build": "tsup src",
+    "dist": "npm run build && node dist/src/server.js",
+    "dev": "tsx --env-file=.env src/server.ts",
+    "watch": "tsx watch --env-file=.env src/server.ts",
+    "migrate": "tsx src/database/migrate.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "YuryRafa",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.20.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.2",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0",
+    "zod": "^4.3.6"
+  }
+}
