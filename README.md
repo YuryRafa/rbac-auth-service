@@ -371,12 +371,11 @@ CREATE TABLE refresh_tokens (
 ## Roadmap
 
 - [ ] Frontend — React app for practicing API consumption
-- [ ] Change password endpoint
 - [ ] Admin secret on register for initial admin creation
 - [ ] Account lockout after failed login attempts
 - [ ] HTTP-only cookie transport for refresh token
 - [ ] Revoke all sessions endpoint
 - [ ] Structured logging (pino)
 - [ ] Graceful shutdown
-- [ ] Unit + integration tests
+
 
