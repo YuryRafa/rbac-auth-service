@@ -18,4 +18,15 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
   } catch (error) {
     next(error);
   }
-};
+}
+
+export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+
+    
+  } catch (error) {
+    
+  }
+
+}
+

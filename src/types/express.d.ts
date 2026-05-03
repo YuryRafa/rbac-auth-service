@@ -1,4 +1,4 @@
-import type { JWTPayload } from './authDtos';
+import type { JWTPayload } from './auth-dtos';
 
 declare global {
   namespace Express {
@@ -9,4 +9,4 @@ declare global {
   }
 }
 
-export {}
+export { }

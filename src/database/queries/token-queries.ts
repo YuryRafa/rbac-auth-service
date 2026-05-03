@@ -1,3 +1,4 @@
+import { InterfaceTokenRepository } from "../../types/token-repository";
 import pool from "../connection";
 
 interface TokenRecord {
@@ -8,7 +9,7 @@ interface TokenRecord {
     created_at: Date;
 }
 
-class TokenQueries {
+class TokenQueries implements InterfaceTokenRepository{
     insertRefreshToken = async (
         userId: string, 
         tokenHash: string, 
@@ -46,6 +47,13 @@ class TokenQueries {
             `DELETE FROM refresh_tokens WHERE expires_at < NOW()`
         );
     };
+
+   deleteAllUserTokens = async (userId: string) => {
+    await pool.query(
+        'DELETE FROM refresh_tokens WHERE user_id = $1',
+        [userId]
+    );
+}
 
 };
 

@@ -3,10 +3,10 @@ import express from "express";
 import authRoutes from "./routes/authRoutes";
 import indexRoute from "./routes"
 import userRoutes from "./routes/userRoutes"
-import errorMiddleware from "./middlewares/errorHandling";
+import errorMiddleware from "./middlewares/error-handling";
 import helmet from "helmet";
 import cors from 'cors';
-import jwtMiddleware from "./middlewares/jwtMiddleware";
+import jwtMiddleware from "./middlewares/jwt-middleware";
 
 const app = express();
 

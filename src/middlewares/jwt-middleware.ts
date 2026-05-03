@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../utils/env';
-import { AppError } from '../utils/appError';
-import type { JWTPayload } from '../types/authDtos';
+import { AppError } from '../utils/app-error';
+import type { JWTPayload } from '../types/auth-dtos';
 
 export default function jwtMiddleware(
   req: Request,

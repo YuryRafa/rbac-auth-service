@@ -1,7 +1,8 @@
 import pool from '../connection';
-import { PublicUser, UserRecord } from '../../types/authDtos';
+import { PublicUser, UserRecord } from '../../types/auth-dtos';
+import { InterfaceUserRepository } from '../../types/user-repository'
 
-class UserQueries {
+class UserQueries implements InterfaceUserRepository {
   findUserByEmail = async (email: string): Promise<UserRecord | null> => {
     const { rows } = await pool.query<UserRecord>(
       `SELECT id, email, password_hash, role, created_at
@@ -34,7 +35,7 @@ class UserQueries {
     );
     return rows[0] ?? null;
   };
-  
+
   findAllUsers = async (): Promise<UserRecord[]> => {
     const { rows } = await pool.query<UserRecord>(
       `SELECT id, email, role, created_at FROM users`
@@ -42,6 +43,14 @@ class UserQueries {
     );
     return rows;
   };
+
+
+  updatePassword = async (id: string, password_hash: string) => {
+    await pool.query(
+      'UPDATE users SET password_hash = $1, updated_at = NOW() where id = $2',
+      [password_hash, id]
+    );
+  }
 }
 
 export { UserQueries };

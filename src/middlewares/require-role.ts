@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { AppError } from "../utils/appError";
+import { AppError } from "../utils/app-error";
 
 const requireRole = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -15,4 +15,4 @@ const requireRole = (...roles: string[]) => {
   };
 };
 
-export default requireRole ;
+export default requireRole;
