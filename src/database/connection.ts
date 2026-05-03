@@ -15,7 +15,7 @@ pool.on('error', (err) => {
   console.error('[pg pool] idle client error:', err.message);
 });
 
-// Verify DB is reachable at startup — fail fast here, not on first request
+// Verify DB is reachable at startup 
 export const connectDB = async () => {
   const client = await pool.connect();
   client.release();

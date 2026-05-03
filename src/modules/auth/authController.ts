@@ -1,23 +1,13 @@
 import type { NextFunction, Request, Response } from "express";
-import { z } from "zod";
+import {LoginBodySchema,RegisterBodySchema} from '../auth/auth-schemas'
 import { AuthService } from "../auth/authService";
 import { AppError } from "../../utils/appError";
 
 const authService = new AuthService();
 
-const RegisterSchema = z.object({
-  email:    z.string().email(),
-  password: z.string().min(8).max(72),
-});
-
-const LoginSchema = z.object({
-  email:    z.string().email(),
-  password: z.string().min(1),
-});
-
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const parsed = RegisterSchema.safeParse(req.body);
+    const parsed = RegisterBodySchema.safeParse(req.body);
     if (!parsed.success) {
       const message = parsed.error.issues.map(i => i.message).join(", ");
       return next(new AppError(message, 422, true));
@@ -31,7 +21,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const parsed = LoginSchema.safeParse(req.body);
+    const parsed = LoginBodySchema.safeParse(req.body);
     if (!parsed.success) {
       const message = parsed.error.issues.map(i => i.message).join(", ");
       return next(new AppError(message, 422, true));

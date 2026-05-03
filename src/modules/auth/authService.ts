@@ -10,13 +10,17 @@ import { env } from "../../utils/env";
 const userQueries  = new UserQueries();
 const tokenQueries = new TokenQueries();
 
+
+
 const BCRYPT_ROUNDS    = 12;
 const MAX_PW_LENGTH    = 72;
 const REFRESH_TTL_MS   = 7 * 24 * 60 * 60 * 1000; // 7 days
 const DUMMY_HASH       = '$2b$12$invalidhashpadding000000000000000000000000000000000000000';
 
 class AuthService {
+
   async register({ email, password }: RegisterDTO): Promise<PublicUser> {
+    
     if (password.length > MAX_PW_LENGTH) {
       throw new AppError("Password too long", 422, true);
     }
