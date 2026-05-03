@@ -48,6 +48,10 @@ src/
 │   ├── jwtMiddleware.ts          # Verifies Bearer token, sets req.user
 │   ├── requireRole.ts            # Guards routes by role
 │   └── errorHandling.ts          # Centralised error handler
+├── tests/
+│   ├── auth-controller.test.ts  # HTTP layer tests (status codes, validation, error forwarding)
+│   ├── auth-service.test.ts     # Business logic tests (bcrypt, token rotation, edge cases)
+│   ├── setup.ts                 # Env vars injected before any module loads      
 ├── modules/
 │   ├── auth/
 │   │   ├── authController.ts     # Register, login, refresh, logout handlers

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { AuthService } from '../modules/auth/authService';
+import { AuthService } from '../modules/auth/auth-service';
 import { InterfaceUserRepository } from '../types/user-repository';
 import { InterfaceTokenRepository } from '../types/token-repository';
 import { UserRecord, PublicUser } from '../types/auth-dtos';
@@ -7,17 +7,17 @@ import { UserRecord, PublicUser } from '../types/auth-dtos';
 // ── Fixtures ────────────────────────────────────────────────────────────────
 
 const mockUserRecord: UserRecord = {
-  id:            'user-123',
-  email:         'test@example.com',
+  id: 'user-123',
+  email: 'test@example.com',
   password_hash: '$2b$12$validhashhere000000000000000000000000000000000000000000',
-  role:          'user',
-  created_at:    new Date('2024-01-01'),
+  role: 'user',
+  created_at: new Date('2024-01-01'),
 };
 
 const mockPublicUser: PublicUser = {
-  id:         'user-123',
-  email:      'test@example.com',
-  role:       'user',
+  id: 'user-123',
+  email: 'test@example.com',
+  role: 'user',
   created_at: new Date('2024-01-01'),
 };
 
@@ -25,17 +25,17 @@ const mockPublicUser: PublicUser = {
 
 const makeUserRepo = (overrides?: Partial<InterfaceUserRepository>): InterfaceUserRepository => ({
   findUserByEmail: vi.fn().mockResolvedValue(null),
-  findUserById:    vi.fn().mockResolvedValue(null),
-  insertUser:      vi.fn().mockResolvedValue(mockPublicUser),
-  updatePassword:  vi.fn().mockResolvedValue(undefined),
+  findUserById: vi.fn().mockResolvedValue(null),
+  insertUser: vi.fn().mockResolvedValue(mockPublicUser),
+  updatePassword: vi.fn().mockResolvedValue(undefined),
   ...overrides,
 });
 
 const makeTokenRepo = (overrides?: Partial<InterfaceTokenRepository>): InterfaceTokenRepository => ({
-  insertRefreshToken:  vi.fn().mockResolvedValue(undefined),
-  findToken:           vi.fn().mockResolvedValue(null),
-  deleteToken:         vi.fn().mockResolvedValue(undefined),
-  deleteExpired:       vi.fn().mockResolvedValue(undefined),
+  insertRefreshToken: vi.fn().mockResolvedValue(undefined),
+  findToken: vi.fn().mockResolvedValue(null),
+  deleteToken: vi.fn().mockResolvedValue(undefined),
+  deleteExpired: vi.fn().mockResolvedValue(undefined),
   deleteAllUserTokens: vi.fn().mockResolvedValue(undefined),
   ...overrides,
 });
@@ -48,9 +48,9 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('creates a user and returns a PublicUser', async () => {
-      const userRepo  = makeUserRepo();
+      const userRepo = makeUserRepo();
       const tokenRepo = makeTokenRepo();
-      const sut       = new AuthService(userRepo, tokenRepo);
+      const sut = new AuthService(userRepo, tokenRepo);
 
       const result = await sut.register({ email: 'test@example.com', password: 'password123' });
 
@@ -60,8 +60,8 @@ describe('AuthService', () => {
     });
 
     it('normalizes email to lowercase', async () => {
-      const userRepo  = makeUserRepo();
-      const sut       = new AuthService(userRepo, makeTokenRepo());
+      const userRepo = makeUserRepo();
+      const sut = new AuthService(userRepo, makeTokenRepo());
 
       await sut.register({ email: 'TEST@EXAMPLE.COM', password: 'password123' });
 
@@ -98,7 +98,7 @@ describe('AuthService', () => {
     it('returns accessToken, refreshToken and PublicUser on valid credentials', async () => {
       // Use a real bcrypt hash for 'password123'
       const bcrypt = await import('bcrypt');
-      const hash   = await bcrypt.hash('password123', 12);
+      const hash = await bcrypt.hash('password123', 12);
 
       const userRepo = makeUserRepo({
         findUserByEmail: vi.fn().mockResolvedValue({ ...mockUserRecord, password_hash: hash }),
@@ -108,15 +108,15 @@ describe('AuthService', () => {
       const result = await sut.login({ email: 'test@example.com', password: 'password123' });
 
       expect(result).toMatchObject({
-        accessToken:  expect.any(String),
+        accessToken: expect.any(String),
         refreshToken: expect.any(String),
-        user:         mockPublicUser,
+        user: mockPublicUser,
       });
     });
 
     it('throws 401 on wrong password', async () => {
       const bcrypt = await import('bcrypt');
-      const hash   = await bcrypt.hash('correctpassword', 12);
+      const hash = await bcrypt.hash('correctpassword', 12);
 
       const userRepo = makeUserRepo({
         findUserByEmail: vi.fn().mockResolvedValue({ ...mockUserRecord, password_hash: hash }),
@@ -138,10 +138,10 @@ describe('AuthService', () => {
 
     it('stores a hashed refresh token — never the raw value', async () => {
       const bcrypt = await import('bcrypt');
-      const hash   = await bcrypt.hash('password123', 12);
+      const hash = await bcrypt.hash('password123', 12);
 
       const tokenRepo = makeTokenRepo();
-      const userRepo  = makeUserRepo({
+      const userRepo = makeUserRepo({
         findUserByEmail: vi.fn().mockResolvedValue({ ...mockUserRecord, password_hash: hash }),
       });
       const sut = new AuthService(userRepo, tokenRepo);
@@ -161,10 +161,10 @@ describe('AuthService', () => {
   describe('refresh', () => {
     it('returns a new accessToken for a valid refresh token', async () => {
       const futureDate = new Date(Date.now() + 10_000);
-      const tokenRepo  = makeTokenRepo({
+      const tokenRepo = makeTokenRepo({
         findToken: vi.fn().mockResolvedValue({
-          id:         'token-123',
-          user_id:    'user-123',
+          id: 'token-123',
+          user_id: 'user-123',
           token_hash: 'somehash',
           expires_at: futureDate,
           created_at: new Date(),
@@ -188,11 +188,11 @@ describe('AuthService', () => {
     });
 
     it('throws 401 when token is expired', async () => {
-      const pastDate  = new Date(Date.now() - 10_000);
+      const pastDate = new Date(Date.now() - 10_000);
       const tokenRepo = makeTokenRepo({
         findToken: vi.fn().mockResolvedValue({
-          id:         'token-123',
-          user_id:    'user-123',
+          id: 'token-123',
+          user_id: 'user-123',
           token_hash: 'somehash',
           expires_at: pastDate,
           created_at: new Date(),
@@ -205,10 +205,10 @@ describe('AuthService', () => {
 
     it('throws 404 when user no longer exists', async () => {
       const futureDate = new Date(Date.now() + 10_000);
-      const tokenRepo  = makeTokenRepo({
+      const tokenRepo = makeTokenRepo({
         findToken: vi.fn().mockResolvedValue({
-          id:         'token-123',
-          user_id:    'deleted-user',
+          id: 'token-123',
+          user_id: 'deleted-user',
           token_hash: 'somehash',
           expires_at: futureDate,
           created_at: new Date(),
@@ -225,7 +225,7 @@ describe('AuthService', () => {
   describe('logout', () => {
     it('deletes the hashed token', async () => {
       const tokenRepo = makeTokenRepo();
-      const sut       = new AuthService(makeUserRepo(), tokenRepo);
+      const sut = new AuthService(makeUserRepo(), tokenRepo);
 
       await sut.logout('raw-token-value');
 

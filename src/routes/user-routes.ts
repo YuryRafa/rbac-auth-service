@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as userController from "../modules/users/userController";
+import * as userController from "../modules/users/user-controller";
 import jwtMiddleware from "../middlewares/jwt-middleware";
 import requireRole from "../middlewares/require-role";
 

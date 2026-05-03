@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { LoginBodySchema, RegisterBodySchema } from '../auth/auth-schemas';
-import { AuthService } from "../auth/authService";
+import { AuthService } from "./auth-service";
 import { UserQueries } from "../../database/queries/user-queries";
 import { TokenQueries } from "../../database/queries/token-queries";
 import { AppError } from "../../utils/app-error";
