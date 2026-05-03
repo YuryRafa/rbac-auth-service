@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from "express";
-import authRoutes from "./routes/authRoutes";
+import authRoutes from "./routes/auth-routes";
 import indexRoute from "./routes"
-import userRoutes from "./routes/userRoutes"
+import userRoutes from "./routes/user-routes"
 import errorMiddleware from "./middlewares/error-handling";
 import helmet from "helmet";
 import cors from 'cors';
